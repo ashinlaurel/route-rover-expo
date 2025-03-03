@@ -13,7 +13,7 @@ import {
 import React from "react";
 import { useRouter } from "expo-router";
 
-export default function TripGuideScreen() {
+export default function MainFeed() {
   const router = useRouter();
 
   return (
@@ -108,7 +108,7 @@ export default function TripGuideScreen() {
         >
           <View className="flex-row">
             {/* First Card - Main Card */}
-            <View className="w-72 mr-4">
+            <TouchableOpacity className="w-72 mr-4" onPress={() => router.push("/trip")}>
               <View className="relative">
                 <Image
                   source={{
@@ -133,7 +133,7 @@ export default function TripGuideScreen() {
                   </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
 
             <View className="w-72 mr-4">
               <View className="relative">
