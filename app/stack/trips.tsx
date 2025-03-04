@@ -13,7 +13,7 @@ import {
 import React from "react";
 import { useRouter } from "expo-router";
 
-export default function Trip() {
+export default function TripScreen() {
   const router = useRouter();
 
   return (
@@ -39,7 +39,7 @@ export default function Trip() {
 
 
 
-      <ScrollView className="mb-20">
+      <ScrollView className="">
 
 
         {/* Trip Selection Tabs */}
@@ -288,21 +288,6 @@ export default function Trip() {
         </ScrollView>
       </ScrollView>
 
-      {/* Bottom Navigation */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex-row justify-around items-center py-3">
-        <TouchableOpacity>
-          <Ionicons name="home" size={22} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="search" size={22} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="heart-outline" size={22} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="settings-outline" size={22} color="gray" />
-        </TouchableOpacity>
-      </View>
     </KeyboardAvoidingView>
   );
 }

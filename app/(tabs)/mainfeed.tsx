@@ -19,39 +19,56 @@ export default function MainFeed() {
   return (
     <KeyboardAvoidingView className="flex-1 bg-white">
       {/* Header */}
-      <View className="p-5 flex-row items-center justify-between">
-        <View>
-          <Text className="text-2xl font-medium text-gray-800">
-            Hello, Vanessa
-          </Text>
-          <Text className="text-gray-500">Welcome to TripGuide</Text>
-        </View>
-        <View className="flex-row items-center">
-          <Image
-            source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
-            className="w-10 h-10 rounded-full"
-          />
-          <TouchableOpacity className="ml-3">
-            <Ionicons name="settings-outline" size={22} color="black" />
+      <View className="p-5">
+        <View className="flex-row items-center justify-between">
+          <View>
+            <Text className="text-sm text-gray-500">Current Location</Text>
+            <View className="flex-row items-center">
+              <Text className="text-2xl font-medium text-gray-800">
+                Netherlands
+              </Text>
+              <TouchableOpacity className="ml-2">
+                <Feather name="chevron-down" size={24} color="black" />
+              </TouchableOpacity>
+            </View>
+          </View>
+          <TouchableOpacity>
+            <Image
+              source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
+              className="w-10 h-10 rounded-full"
+            />
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Search Bar */}
-      <View className="px-5 mb-6">
-        <View className="flex-row items-center bg-gray-100 p-3 rounded-full">
-          <Feather name="search" size={18} color="gray" className="mr-2" />
-          <TextInput placeholder="Search" className="flex-1 text-gray-600" />
+      {/* Search Bar with Settings */}
+      <View className="px-5 mb-6 flex-row items-center space-x-3">
+        <View className="flex-1 flex-row items-center bg-gray-100 rounded-full px-4 py-2">
+          <Feather name="search" size={20} color="gray" />
+          <TextInput
+            placeholder="Search destination..."
+            className="flex-1 ml-3 text-gray-600"
+            placeholderTextColor="#9CA3AF"
+          />
         </View>
+        <TouchableOpacity
+          className="bg-gray-100 p-2.5 rounded-full"
+          onPress={() => {/* Add settings action */}}
+        >
+          <Feather name="sliders" size={20} color="black" />
+        </TouchableOpacity>
       </View>
 
-      <ScrollView className="mb-20">
+      <ScrollView className="">
         {/* Trip Selection Header */}
-        <View className="px-5 mb-4">
-          <Text className="text-xl font-semibold text-gray-800">
-            Select your next trip
+        {/* <View className="px-6 mb-8">
+          <Text className="text-4xl font-semibold text-gray-800 mb-2">
+            Hi, Amanda 👋
           </Text>
-        </View>
+          <Text className="text-base text-gray-500">
+            Where would you like to explore?
+          </Text>
+        </View> */}
 
         {/* Trip Selection Tabs */}
         <ScrollView
@@ -108,7 +125,10 @@ export default function MainFeed() {
         >
           <View className="flex-row">
             {/* First Card - Main Card */}
-            <TouchableOpacity className="w-72 mr-4" onPress={() => router.push("/trip")}>
+            <TouchableOpacity
+              className="w-72 mr-4"
+              onPress={() => router.push("/stack/trips")}
+            >
               <View className="relative">
                 <Image
                   source={{
@@ -176,7 +196,7 @@ export default function MainFeed() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          className=" max-h-80 mx-2 px-2"
+          className=" max-h-80 mx-2 px-2 "
         >
           <View className="flex-row">
             {/* First Card - Main Card */}
@@ -220,7 +240,7 @@ export default function MainFeed() {
               <View className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                 <View className="p-3 border-b border-gray-100">
                   <Text className="font-semibold text-gray-800">
-                   Church Street
+                    Church Street
                   </Text>
                   <Text className="text-xs text-gray-500">Bangalore</Text>
                 </View>
@@ -252,22 +272,6 @@ export default function MainFeed() {
           </View>
         </ScrollView>
       </ScrollView>
-
-      {/* Bottom Navigation */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex-row justify-around items-center py-3">
-        <TouchableOpacity>
-          <Ionicons name="home" size={22} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="search" size={22} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="heart-outline" size={22} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="settings-outline" size={22} color="gray" />
-        </TouchableOpacity>
-      </View>
     </KeyboardAvoidingView>
   );
 }

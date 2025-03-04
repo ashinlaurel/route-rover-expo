@@ -45,7 +45,7 @@ export default function TripGuideScreen() {
         </View>
       </View>
 
-      <ScrollView className="mb-20">
+      <ScrollView className="">
         {/* Trip Selection Header */}
         <View className="px-5 mb-4">
           <Text className="text-xl font-semibold text-gray-800">
