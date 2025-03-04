@@ -17,8 +17,7 @@ export default function MainFeed() {
   const router = useRouter();
 
   return (
-    <KeyboardAvoidingView className="flex-1 bg-white">
-      {/* Header */}
+<View className="bg-white h-full">
       <View className="p-5 flex-row items-center justify-between">
         <View>
           <Text className="text-2xl font-medium text-gray-800">
@@ -45,7 +44,7 @@ export default function MainFeed() {
         </View>
       </View>
 
-      <ScrollView className="mb-20">
+      <ScrollView className="">
         {/* Trip Selection Header */}
         <View className="px-5 mb-4">
           <Text className="text-xl font-semibold text-gray-800">
@@ -176,7 +175,7 @@ export default function MainFeed() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          className=" max-h-80 mx-2 px-2"
+          className=" max-h-80 mx-2 px-2 mb-32"
         >
           <View className="flex-row">
             {/* First Card - Main Card */}
@@ -252,22 +251,6 @@ export default function MainFeed() {
           </View>
         </ScrollView>
       </ScrollView>
-
-      {/* Bottom Navigation */}
-      <View className="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex-row justify-around items-center py-3">
-        <TouchableOpacity>
-          <Ionicons name="home" size={22} color="black" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="search" size={22} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="heart-outline" size={22} color="gray" />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Ionicons name="settings-outline" size={22} color="gray" />
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+       </View>
   );
 }

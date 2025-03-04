@@ -1,5 +1,4 @@
-import LoginScreen from "./login";
-import WelcomeScreen from "@/components/WelcomeScreen";
+import LoginScreen from "./stack/login";
 
 export default function Index() {
   return <LoginScreen />;
