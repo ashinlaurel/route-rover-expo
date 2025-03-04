@@ -1,7 +1,6 @@
-import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
 import {
+  Animated,
   Image,
-  KeyboardAvoidingView,
   Platform,
   ScrollView,
   Text,
@@ -9,249 +8,152 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { Feather, FontAwesome, Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
 
-import React from "react";
 import { useRouter } from "expo-router";
 
 export default function CreateTrip() {
   const router = useRouter();
+  const [selectedType, setSelectedType] = useState("Adventure");
 
   return (
-<View className="bg-white h-full">
-      <View className="p-5 flex-row items-center justify-between">
-        <View>
-          <Text className="text-2xl font-medium text-gray-800">
-            Hello, Vanessa
-          </Text>
-          <Text className="text-gray-500">Welcome to TripGuide</Text>
-        </View>
-        <View className="flex-row items-center">
-          <Image
-            source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
-            className="w-10 h-10 rounded-full"
-          />
-          <TouchableOpacity className="ml-3">
-            <Ionicons name="settings-outline" size={22} color="black" />
+    <View className="flex-1 bg-white">
+      {/* Header */}
+      <View className="px-6 pt-6 pb-4 border-b border-gray-100">
+        <View className="flex-row items-center justify-between">
+          <View>
+            <Text className="text-3xl font-semibold text-gray-800">
+              Create Trip
+            </Text>
+            <Text className="text-base text-gray-500 mt-1">
+              Plan your next adventure
+            </Text>
+          </View>
+          <TouchableOpacity
+            className="bg-black px-6 py-2.5 rounded-full shadow-sm"
+            onPress={() => router.push("/(tabs)/mainfeed")}
+          >
+            <Text className="text-white font-medium">Create</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Search Bar */}
-      <View className="px-5 mb-6">
-        <View className="flex-row items-center bg-gray-100 p-3 rounded-full">
-          <Feather name="search" size={18} color="gray" className="mr-2" />
-          <TextInput placeholder="Search" className="flex-1 text-gray-600" />
-        </View>
-      </View>
-
-      <ScrollView className="">
-        {/* Trip Selection Header */}
-        <View className="px-5 mb-4">
-          <Text className="text-xl font-semibold text-gray-800">
-            Select your next trip
-          </Text>
+      <ScrollView className="flex-1 px-6" contentContainerStyle={{ paddingBottom: 120 }}>
+        {/* Trip Name Input */}
+        <View className="mb-8 mt-6">
+          <Text className="text-base font-medium text-gray-800 mb-3">Trip Name</Text>
+          <View className="flex-row items-center bg-gray-50 rounded-2xl px-4 py-3.5 border border-gray-100">
+            <Feather name="map-pin" size={20} color="#6B7280" />
+            <TextInput
+              placeholder="Enter trip name"
+              className="flex-1 ml-3 text-gray-800 text-base"
+              placeholderTextColor="#9CA3AF"
+            />
+          </View>
         </View>
 
-        {/* Trip Selection Tabs */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          className="px-5 mb-6 max-h-14"
-        >
-          {["Asia", "Europe", "South America", "North America"].map(
-            (region, index) => (
+        {/* Date Selection */}
+        <View className="mb-8">
+          <Text className="text-base font-medium text-gray-800 mb-3">Trip Dates</Text>
+          <View className="flex-row space-x-4">
+            <TouchableOpacity className="flex-1 flex-row items-center bg-gray-50 rounded-2xl px-4 py-3.5 border border-gray-100">
+              <Feather name="calendar" size={20} color="#6B7280" />
+              <Text className="ml-3 text-gray-500">Start Date</Text>
+            </TouchableOpacity>
+            <TouchableOpacity className="flex-1 flex-row items-center bg-gray-50 rounded-2xl px-4 py-3.5 border border-gray-100">
+              <Feather name="calendar" size={20} color="#6B7280" />
+              <Text className="ml-3 text-gray-500">End Date</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {/* Trip Type */}
+        <View className="mb-8">
+          <Text className="text-base font-medium text-gray-800 mb-3">Trip Type</Text>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            className="-mx-2"
+          >
+            {["Adventure", "Beach", "City", "Cultural", "Nature"].map((type) => (
               <TouchableOpacity
-                key={index}
-                className={`px-4 py-3 mr-3 rounded-full ${
-                  region === "South America"
-                    ? "bg-black"
-                    : "bg-white border border-gray-100"
+                key={type}
+                onPress={() => setSelectedType(type)}
+                className={`px-6 py-3 rounded-xl border m-2 ${
+                  selectedType === type
+                    ? "bg-black border-black"
+                    : "bg-white border-gray-200"
                 }`}
-                style={{
-                  minWidth: region === "South America" ? 140 : 90,
-                  height: 46,
-                  justifyContent: "center",
-                  alignItems: "center",
-                  shadowColor: "#000",
-                  shadowOffset: { width: 0, height: 1 },
-                  shadowOpacity: 0.05,
-                  shadowRadius: 2,
-                  elevation: 1,
-                }}
               >
                 <Text
                   className={`${
-                    region === "South America" ? "text-white" : "text-gray-700"
-                  } text-center`}
-                  style={{ fontSize: 15 }}
-                  numberOfLines={1}
+                    selectedType === type ? "text-white" : "text-gray-700"
+                  } font-medium`}
                 >
-                  {region}
+                  {type}
                 </Text>
               </TouchableOpacity>
-            )
-          )}
-        </ScrollView>
-
-        <View className="px-5 mb-4">
-          <Text className="text-2xl font-semibold text-gray-800">
-            Featured Trips
-          </Text>
+            ))}
+          </ScrollView>
         </View>
 
-        {/* Trip Cards Carousel */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          className=" max-h-80 mx-2 px-2"
-        >
-          <View className="flex-row">
-            {/* First Card - Main Card */}
-            <TouchableOpacity className="w-72 mr-4" onPress={() => router.push("/trip")}>
-              <View className="relative">
-                <Image
-                  source={{
-                    uri: "https://images.unsplash.com/photo-1548013146-72479768bada?q=80&w=2676&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                  }}
-                  className="w-full h-64 rounded-xl"
+        {/* Duration and Budget */}
+        <View className="mb-8">
+          <Text className="text-base font-medium text-gray-800 mb-3">Trip Details</Text>
+          <View className="flex-row space-x-4">
+            <View className="flex-1">
+              <View className="flex-row items-center bg-gray-50 rounded-2xl px-4 py-3.5 border border-gray-100">
+                <Feather name="clock" size={20} color="#6B7280" />
+                <TextInput
+                  placeholder="Days"
+                  className="flex-1 ml-3 text-gray-800"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
                 />
-                <View className="absolute top-3 left-3 bg-black bg-opacity-70 px-3 py-1 rounded-full">
-                  <Text className="text-white text-xs">India</Text>
-                </View>
-                <TouchableOpacity className="absolute top-3 right-3 p-1.5 bg-white rounded-full">
-                  <Feather name="more-vertical" size={18} color="black" />
-                </TouchableOpacity>
-                <View className="absolute bottom-0 left-0 right-0 p-4">
-                  <Text className="text-white font-bold text-xl">Agra</Text>
-                  <View className="flex-row items-center mt-1">
-                    <FontAwesome name="star" size={14} color="white" />
-                    <Text className="text-white ml-1">5.0</Text>
-                    <Text className="text-white text-xs ml-2">
-                      (143 reviews)
-                    </Text>
-                  </View>
-                </View>
               </View>
-            </TouchableOpacity>
-
-            <View className="w-72 mr-4">
-              <View className="relative">
-                <Image
-                  source={{
-                    uri: "https://images.unsplash.com/photo-1483729558449-99ef09a8c325?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80",
-                  }}
-                  className="w-full h-64 rounded-xl"
+            </View>
+            <View className="flex-1">
+              <View className="flex-row items-center bg-gray-50 rounded-2xl px-4 py-3.5 border border-gray-100">
+                <Feather name="dollar-sign" size={20} color="#6B7280" />
+                <TextInput
+                  placeholder="Budget"
+                  className="flex-1 ml-3 text-gray-800"
+                  placeholderTextColor="#9CA3AF"
+                  keyboardType="numeric"
                 />
-                <View className="absolute top-3 left-3 bg-black bg-opacity-70 px-3 py-1 rounded-full">
-                  <Text className="text-white text-xs">Brazil</Text>
-                </View>
-                <TouchableOpacity className="absolute top-3 right-3 p-1.5 bg-white rounded-full">
-                  <Feather name="more-vertical" size={18} color="black" />
-                </TouchableOpacity>
-                <View className="absolute bottom-0 left-0 right-0 p-4">
-                  <Text className="text-white font-bold text-xl">
-                    Rio de Janeiro
-                  </Text>
-                  <View className="flex-row items-center mt-1">
-                    <FontAwesome name="star" size={14} color="white" />
-                    <Text className="text-white ml-1">5.0</Text>
-                    <Text className="text-white text-xs ml-2">
-                      (143 reviews)
-                    </Text>
-                  </View>
-                </View>
               </View>
             </View>
           </View>
-        </ScrollView>
-
-        <View className="px-5 my-4">
-          <Text className="text-2xl font-semibold text-gray-800">
-            Quick Trips
-          </Text>
         </View>
 
-        {/* Trip Cards Carousel */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          className=" max-h-80 mx-2 px-2 "
-
-        >
-          <View className="flex-row">
-            {/* First Card - Main Card */}
-
-            {/* Second Card - Detail Card */}
-            <View className="w-72 mr-4">
-              <View className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                <View className="p-3 border-b border-gray-100">
-                  <Text className="font-semibold text-gray-800">
-                    Goa
-                  </Text>
-                  <Text className="text-xs text-gray-500">India</Text>
-                </View>
-                <Image
-                  source={{
-                    uri: "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                  }}
-                  className="w-full h-32"
-                />
-                <View className="p-3">
-                  <Text className="text-gray-700 text-sm mb-2">
-                    Discover the vibrant culture and stunning beaches of Rio de
-                    Janeiro.
-                  </Text>
-                  <View className="flex-row justify-between items-center">
-                    <View className="flex-row items-center">
-                      <FontAwesome name="star" size={12} color="gold" />
-                      <Text className="text-gray-700 text-xs ml-1">
-                        5.0 (143)
-                      </Text>
-                    </View>
-                    <TouchableOpacity className="bg-black px-2.5 py-1 rounded-full">
-                      <Text className="text-white text-xs">Book now</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
-
-            <View className="w-72 mr-4">
-              <View className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                <View className="p-3 border-b border-gray-100">
-                  <Text className="font-semibold text-gray-800">
-                   Church Street
-                  </Text>
-                  <Text className="text-xs text-gray-500">Bangalore</Text>
-                </View>
-                <Image
-                  source={{
-                    uri: "https://images.unsplash.com/photo-1627306036351-036986f292a9?q=80&w=2648&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-                  }}
-                  className="w-full h-32"
-                />
-                <View className="p-3">
-                  <Text className="text-gray-700 text-sm mb-2">
-                    Discover the vibrant culture and stunning beaches of Rio de
-                    Janeiro.
-                  </Text>
-                  <View className="flex-row justify-between items-center">
-                    <View className="flex-row items-center">
-                      <FontAwesome name="star" size={12} color="gold" />
-                      <Text className="text-gray-700 text-xs ml-1">
-                        5.0 (143)
-                      </Text>
-                    </View>
-                    <TouchableOpacity className="bg-black px-2.5 py-1 rounded-full">
-                      <Text className="text-white text-xs">Book now</Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            </View>
+        {/* Destination */}
+        <View className="mb-8">
+          <Text className="text-base font-medium text-gray-800 mb-3">Destination</Text>
+          <View className="flex-row items-center bg-gray-50 rounded-2xl px-4 py-3.5 border border-gray-100">
+            <Feather name="map" size={20} color="#6B7280" />
+            <TextInput
+              placeholder="Where are you going?"
+              className="flex-1 ml-3 text-gray-800"
+              placeholderTextColor="#9CA3AF"
+            />
           </View>
-        </ScrollView>
+        </View>
+
+        {/* Description */}
+        <View className="mb-8">
+          <Text className="text-base font-medium text-gray-800 mb-3">Description</Text>
+          <View className="bg-gray-50 rounded-2xl px-4 py-4 border border-gray-100">
+            <TextInput
+              placeholder="Write something about your trip..."
+              className="text-gray-800 min-h-[100]"
+              placeholderTextColor="#9CA3AF"
+              multiline
+              textAlignVertical="top"
+            />
+          </View>
+        </View>
       </ScrollView>
-       </View>
+    </View>
   );
 }
