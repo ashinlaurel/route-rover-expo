@@ -13,10 +13,10 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
   return (
     <View style={{
       position: 'absolute',
-      bottom: 25,
+      bottom: 35,
       left: 70,
       right: 70,
-      backgroundColor: 'white',
+      backgroundColor: 'black',
       borderRadius: 35,
       flexDirection: 'row',
       alignItems: 'center',
@@ -42,7 +42,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
               ? options.title
               : route.name;
 
-        const isFocused = state.index === index;
+        const isFocused: boolean = state.index === index;
 
         const onPress = () => {
           const event = navigation.emit({
@@ -73,21 +73,23 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
             onPress={onPress}
             onLongPress={onLongPress}
             style={{ flex: 1 }}
-            className='p-4 flex  items-center justify-center '
+            className='py-2 flex items-center justify-center'
             pressColor='transparent'
             pressOpacity={0}
           >
-            <Ionicons
-              name={
-                route.name === 'mainfeed'
-                  ? 'albums-outline'
-                  : route.name === 'createtrip'
-                    ? 'add'
-                    : 'person-outline'
-              }
-              size={route.name=='createtrip'? 28:24}
-              color={isFocused ? colors.primary : colors.text}
-            />
+            <View className={`h-10 w-10 rounded-full flex items-center justify-center ${isFocused ? 'bg-white' : ''}`}>
+              <Ionicons
+                name={
+                  route.name === 'mainfeed'
+                    ? 'albums-outline'
+                    : route.name === 'createtrip'
+                      ? 'add'
+                      : 'person-outline'
+                }
+                size={route.name=='createtrip'? 28:24}
+                color={isFocused ? '#000000' : '#FFFFFF'}
+              />
+            </View>
           </PlatformPressable>
         );
       })}

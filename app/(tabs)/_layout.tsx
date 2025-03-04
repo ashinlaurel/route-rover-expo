@@ -6,9 +6,9 @@ import { View } from "react-native";
 export default function TabLayout() {
   return (
     <Tabs tabBar={(props) => <TabBar {...props} />}>
-      <Tabs.Screen options={{headerShown: false}} name="mainfeed" />
-      <Tabs.Screen options={{headerShown: false}} name="search" />
-      <Tabs.Screen options={{headerShown: false}} name="createtrip" />
+      <Tabs.Screen options={{headerShown: false, animation:'shift'}} name="mainfeed" />
+      <Tabs.Screen options={{headerShown: false, animation:'shift'}} name="createtrip" />
+      <Tabs.Screen options={{headerShown: false, animation:'shift'}} name="personal" />
     </Tabs>
   );
 }

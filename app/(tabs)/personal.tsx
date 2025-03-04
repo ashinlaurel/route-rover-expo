@@ -13,7 +13,7 @@ import {
 import React from "react";
 import { useRouter } from "expo-router";
 
-export default function Trip() {
+export default function Personal() {
   const router = useRouter();
 
   return (
