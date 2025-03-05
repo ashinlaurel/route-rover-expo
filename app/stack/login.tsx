@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect, useState } from "react";
+import { useUser } from "../context/UserContext";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,19 +29,37 @@ import { useRouter } from "expo-router";
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { login, googleSignIn, facebookSignIn, user, isLoading } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginType, setLoginType] = useState("email");
   const screenWidth = Dimensions.get('window').width;
 
+  useEffect(() => {
+    if (user && !isLoading) {
+      // If user is already logged in, redirect to main feed
+      router.replace('/mainfeed');
+    }
+  }, [user, isLoading]);
+
+  // If still loading, you might want to show a loading screen
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <Text className="text-gray-600">Loading...</Text>
+      </View>
+    );
+  }
+
+  // If user is logged in, don't render the login screen
+  if (user) {
+    return null;
+  }
+
   // Google Sign-in
   const handleGoogleSignIn = async () => {
     try {
-      // await GoogleSignin.hasPlayServices();
-      // const { idToken } = await GoogleSignin.signIn();
-      // const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      // await auth().signInWithCredential(googleCredential);
-      console.log("Google Sign-in successful!");
+      await googleSignIn();
     } catch (error) {
       console.error("Google Sign-in Error:", error);
     }
@@ -49,21 +68,18 @@ export default function LoginScreen() {
   // Facebook Login
   const handleFacebookLogin = async () => {
     try {
-      // const result = await LoginManager.logInWithPermissions(["public_profile", "email"]);
-      // if (result.isCancelled) {
-      //   console.log("Facebook login cancelled.");
-      //   return;
-      // }
-      // const data = await AccessToken.getCurrentAccessToken();
-      // if (!data) {
-      //   console.error("Something went wrong obtaining access token.");
-      //   return;
-      // }
-      // const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
-      // await auth().signInWithCredential(facebookCredential);
-      console.log("Facebook Login Successful!");
+      await facebookSignIn();
     } catch (error) {
       console.error("Facebook Login Error:", error);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      await login(email, password);
+    } catch (error) {
+      console.error("Login Error:", error);
+      // Here you might want to show an error message to the user
     }
   };
 
@@ -190,7 +206,7 @@ export default function LoginScreen() {
 
               {/* Login Button */}
               <TouchableOpacity
-                onPress={() => router.push("/mainfeed")}
+                onPress={handleLogin}
                 className="rounded-2xl bg-black items-center py-4 shadow-sm"
               >
                 <Text className="text-lg font-semibold text-white">Login</Text>
