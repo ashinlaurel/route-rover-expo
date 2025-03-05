@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,161 +13,204 @@ import {
 
 import React from "react";
 import { useRouter } from "expo-router";
+import { useTheme } from "../context/ThemeContext";
 import { useThemedStyles } from "../hooks/useThemedStyles";
 
 export default function Personal() {
   const router = useRouter();
   const styles = useThemedStyles();
+  const { isDarkMode } = useTheme();
+
+  const stats = [
+    { number: "12", label: "Trips" },
+    { number: "48", label: "Places" },
+    { number: "2.4k", label: "Followers" },
+  ];
+
+  const menuItems = [
+    {
+      icon: "person-circle-outline",
+      title: "Edit Profile",
+      subtitle: "Update your personal information",
+      route: "/stack/editprofile"
+    },
+    {
+      icon: "notifications-outline",
+      title: "Notifications",
+      subtitle: "Manage your notifications",
+      route: ""
+    },
+    {
+      icon: "settings-outline",
+      title: "Settings",
+      subtitle: "App settings and preferences",
+      route: "/stack/settings"
+    },
+    {
+      icon: "shield-outline",
+      title: "Privacy",
+      subtitle: "Manage your privacy settings",
+      route: ""
+    },
+  ];
 
   return (
-    <View className={`h-full ${styles.bgPrimary}`}>
-      {/* Header with Profile Info */}
-      <View className="p-8 pb-8">
-        <View className="flex-row items-center">
-          <TouchableOpacity
-            onPress={() => router.push("/stack/editprofile")}
-            className="relative"
-          >
-            <Image
-              source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
-              className="w-20 h-20 rounded-full"
-              style={{
-                borderWidth: 2,
-                borderColor: '#f3f4f6',
-              }}
-            />
-            <View
-              className={`absolute bottom-0 right-0 ${styles.buttonPrimary} p-1.5 rounded-full`}
-              style={{
-                shadowColor: "#000",
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.1,
-                shadowRadius: 3,
-                elevation: 2,
-              }}
+    <View className={`flex-1 ${styles.bgPrimary}`}>
+      <StatusBar
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
+        backgroundColor="transparent"
+        translucent
+      />
+
+      <ScrollView
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      >
+        {/* Profile Header */}
+        <View className={`pt-14 px-6 pb-6 ${styles.bgSecondary} rounded-b-[40px]`}>
+          <View className="flex-row items-center justify-between mb-6">
+            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>Profile</Text>
+            <TouchableOpacity
+              className={`${styles.bgPrimary} p-2 rounded-full`}
+              onPress={() => router.push("/stack/editprofile")}
             >
-              <Ionicons name="pencil" size={12} color={styles.iconColor} />
+              <Feather name="edit-2" size={20} color={styles.iconColor} />
+            </TouchableOpacity>
+          </View>
+
+          <View className="items-center">
+            <View className="relative mb-4">
+              <Image
+                source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
+                className="w-24 h-24 rounded-full"
+                style={{
+                  borderWidth: 4,
+                  borderColor: isDarkMode ? '#374151' : '#f3f4f6',
+                }}
+              />
+              <View className={`absolute bottom-0 right-0 ${styles.buttonPrimary} p-2 rounded-full`}>
+                <Ionicons name="camera" size={14} color={styles.buttonPrimaryText} />
+              </View>
             </View>
-          </TouchableOpacity>
-          <View className="ml-4">
-            <Text className={`text-2xl font-semibold ${styles.textPrimary}`}>
+
+            <Text className={`text-xl font-semibold ${styles.textPrimary} mb-1`}>
               Vanessa Smith
             </Text>
-            <Text className={styles.textSecondary}>Travel Enthusiast</Text>
+            <Text className={`${styles.textSecondary} mb-6`}>
+              Travel Enthusiast
+            </Text>
+
+            {/* Stats Row */}
+            <View className="flex-row justify-between w-full max-w-xs">
+              {stats.map((stat, index) => (
+                <View key={index} className="items-center">
+                  <Text className={`text-2xl font-bold ${styles.textPrimary}`}>
+                    {stat.number}
+                  </Text>
+                  <Text className={styles.textSecondary}>{stat.label}</Text>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
 
-        {/* Stats */}
-        <View className="flex-row justify-between mt-6 px-10">
-          <View className="items-center">
-            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>12</Text>
-            <Text className={styles.textSecondary}>Trips</Text>
+        {/* Recent Trips */}
+        <View className="px-6 mt-6">
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className={`text-xl font-semibold ${styles.textPrimary}`}>
+              Recent Trips
+            </Text>
+            <TouchableOpacity>
+              <Text className={styles.textSecondary}>See All</Text>
+            </TouchableOpacity>
           </View>
-          <View className="items-center">
-            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>48</Text>
-            <Text className={styles.textSecondary}>Places</Text>
-          </View>
-          <View className="items-center">
-            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>2.4k</Text>
-            <Text className={styles.textSecondary}>Followers</Text>
-          </View>
-        </View>
-      </View>
 
-      <ScrollView className="pl-3">
-        {/* My Trips Section */}
-        <View className="mb-6">
-          <Text className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>
-            My Trips
-          </Text>
           <ScrollView
             horizontal
             showsHorizontalScrollIndicator={false}
-            className="space-x-4"
+            className="mb-8"
           >
-            {/* Trip Card 1 */}
+            {/* Trip Cards */}
             <TouchableOpacity
-              className="w-72 m-2"
+              className="mr-4 w-72"
               onPress={() => router.push("/stack/trips")}
             >
-              <View className="relative">
+              <View className={`${styles.cardBg} rounded-2xl overflow-hidden`}>
                 <Image
                   source={{
                     uri: "https://images.unsplash.com/photo-1548013146-72479768bada",
                   }}
-                  className="w-full h-48 rounded-xl"
+                  className="w-full h-32"
                 />
-                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
-                  <Text className="text-white text-xs">Completed</Text>
-                </View>
-                <View className="absolute bottom-0 left-0 right-0 p-4">
-                  <Text className="text-white font-bold text-xl">Agra Trip</Text>
-                  <Text className="text-white text-sm">March 2024</Text>
+                <View className="p-4">
+                  <View className="flex-row justify-between items-center mb-2">
+                    <Text className={`font-semibold ${styles.textPrimary}`}>Agra Trip</Text>
+                    <View className={`${styles.bgSecondary} px-2 py-1 rounded-full`}>
+                      <Text className={styles.textSecondary}>Completed</Text>
+                    </View>
+                  </View>
+                  <Text className={styles.textSecondary}>March 2024</Text>
                 </View>
               </View>
             </TouchableOpacity>
 
-            {/* Trip Card 2 */}
-            <TouchableOpacity className="w-72 m-2">
-              <View className="relative">
+            <TouchableOpacity className="mr-4 w-72">
+              <View className={`${styles.cardBg} rounded-2xl overflow-hidden`}>
                 <Image
                   source={{
                     uri: "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2",
                   }}
-                  className="w-full h-48 rounded-xl"
+                  className="w-full h-32"
                 />
-                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
-                  <Text className="text-white text-xs">Upcoming</Text>
-                </View>
-                <View className="absolute bottom-0 left-0 right-0 p-4">
-                  <Text className="text-white font-bold text-xl">Goa Beach</Text>
-                  <Text className="text-white text-sm">April 2024</Text>
+                <View className="p-4">
+                  <View className="flex-row justify-between items-center mb-2">
+                    <Text className={`font-semibold ${styles.textPrimary}`}>Goa Beach</Text>
+                    <View className={`${styles.bgSecondary} px-2 py-1 rounded-full`}>
+                      <Text className={styles.textSecondary}>Upcoming</Text>
+                    </View>
+                  </View>
+                  <Text className={styles.textSecondary}>April 2024</Text>
                 </View>
               </View>
             </TouchableOpacity>
           </ScrollView>
         </View>
 
-        {/* Account Settings */}
-        <View className="mb-6">
+        {/* Menu Items */}
+        <View className="px-6">
           <Text className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>
-            Account Settings
+            Settings
           </Text>
-          <View className="space-y-4">
+          <View className="space-y-3">
+            {menuItems.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => item.route && router.push(item.route)}
+                className={`flex-row items-center ${styles.cardBg} p-4 rounded-2xl`}
+              >
+                <View className={`${styles.bgSecondary} p-3 rounded-xl`}>
+                  <Ionicons name={item.icon as any} size={22} color={styles.iconColor} />
+                </View>
+                <View className="flex-1 ml-4">
+                  <Text className={`font-medium ${styles.textPrimary}`}>{item.title}</Text>
+                  <Text className={`text-sm ${styles.textSecondary}`}>{item.subtitle}</Text>
+                </View>
+                <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
+              </TouchableOpacity>
+            ))}
+
+            {/* Logout Button */}
             <TouchableOpacity
-              className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}
-              onPress={() => router.push("/stack/editprofile")}
+              className={`flex-row items-center ${styles.cardBg} p-4 rounded-2xl mt-4`}
+              onPress={() => router.push("/stack/login")}
             >
-              <View className="flex-row items-center">
-                <Ionicons name="person-circle-outline" size={24} color={styles.iconColor} />
-                <Text className={`ml-3 ${styles.textPrimary}`}>Edit Profile</Text>
+              <View className="p-3 rounded-xl bg-red-100">
+                <Ionicons name="log-out-outline" size={22} color="red" />
               </View>
-              <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
-            </TouchableOpacity>
-
-            <TouchableOpacity className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}>
-              <View className="flex-row items-center">
-                <Ionicons name="notifications-outline" size={24} color={styles.iconColor} />
-                <Text className={`ml-3 ${styles.textPrimary}`}>Notifications</Text>
-              </View>
-              <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}
-              onPress={() => router.push("/stack/settings")}
-            >
-              <View className="flex-row items-center">
-                <Ionicons name="settings-outline" size={24} color={styles.iconColor} />
-                <Text className={`ml-3 ${styles.textPrimary}`}>Settings</Text>
-              </View>
-              <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
-            </TouchableOpacity>
-
-            <TouchableOpacity className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}>
-              <View className="flex-row items-center">
-                <Ionicons name="log-out-outline" size={24} color="red" />
-                <Text className="ml-3 text-red-500">Logout</Text>
+              <View className="flex-1 ml-4">
+                <Text className="font-medium text-red-500">Logout</Text>
+                <Text className="text-sm text-red-400">Sign out of your account</Text>
               </View>
               <Feather name="chevron-right" size={20} color="red" />
             </TouchableOpacity>
