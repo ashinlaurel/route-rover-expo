@@ -125,10 +125,6 @@ export default function MainFeed() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className={`flex-1 ${styles.bgPrimary}`}
     >
-      <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={isDarkMode ? "#111827" : "#FFFFFF"}
-      />
 
       {/* Fixed Header */}
       <View className="p-5">
@@ -208,19 +204,19 @@ export default function MainFeed() {
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        bounces={true}
-        contentContainerStyle={{ flexGrow: 1 }}
         nestedScrollEnabled={true}
+        bounces={true}
+        style={{ flexGrow: 1 }}
       >
         <TouchableWithoutFeedback onPress={() => setIsSearchFocused(false)}>
-          <View className="flex-1">
+          <View className="flex-1 pb-24">
             {/* Trip Selection Tabs */}
             <View className="mb-6">
               <ScrollView
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 className="px-5"
-                nestedScrollEnabled={true}
+
               >
                 {["Asia", "Europe", "South America", "North America"].map(
                   (region, index) => (
@@ -271,7 +267,6 @@ export default function MainFeed() {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 className="max-h-80 mx-2 px-2"
-                nestedScrollEnabled={true}
               >
                 <View className="flex-row">
                   {/* First Card - Main Card */}
@@ -316,7 +311,10 @@ export default function MainFeed() {
                     </View>
                   </TouchableOpacity>
 
-                  <View className="w-72 mr-4">
+                  <TouchableOpacity
+                    className="w-72 mr-4"
+                    onPress={() => router.push("/stack/trips")}
+                  >
                     <View className="relative">
                       <Image
                         source={{
@@ -327,13 +325,22 @@ export default function MainFeed() {
                       <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
                         <Text className="text-white text-xs">Brazil</Text>
                       </View>
-                      <TouchableOpacity className={`absolute top-3 right-3 p-1.5 ${styles.bgPrimary} rounded-full`}>
+                      <TouchableOpacity
+                        className={`absolute top-3 right-3 p-1.5 ${styles.bgPrimary} rounded-full`}
+                        onPress={(event) => {
+                          const layout = event.nativeEvent;
+                          setDropdownPosition({
+                            top: layout.pageY + 35, // Position below the button
+                            right: 20, // Align with the right side
+                          });
+                          setSelectedCardId('1');
+                          setShowMoreOptions(true);
+                        }}
+                      >
                         <Feather name="more-vertical" size={18} color={styles.iconColor} />
                       </TouchableOpacity>
                       <View className="absolute bottom-0 left-0 right-0 p-4">
-                        <Text className="text-white font-bold text-xl">
-                          Rio de Janeiro
-                        </Text>
+                        <Text className="text-white font-bold text-xl">Rio di genirio</Text>
                         <View className="flex-row items-center mt-1">
                           <FontAwesome name="star" size={14} color="white" />
                           <Text className="text-white ml-1">5.0</Text>
@@ -343,7 +350,9 @@ export default function MainFeed() {
                         </View>
                       </View>
                     </View>
-                  </View>
+                  </TouchableOpacity>
+
+
                 </View>
               </ScrollView>
             </View>
@@ -361,12 +370,15 @@ export default function MainFeed() {
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 className="max-h-80 mx-2 px-2"
-                nestedScrollEnabled={true}
+
               >
                 <View className="flex-row">
                   {/* First Card - Main Card */}
 
                   {/* Second Card - Detail Card */}
+                  <TouchableOpacity onPress={() => router.push("/stack/trips")}>
+
+
                   <View className="w-72 mr-4">
                     <View className={`${styles.cardBg} rounded-xl shadow-md overflow-hidden border ${styles.cardBorder}`}>
                       <View className={`p-3 border-b ${styles.borderColor}`}>
@@ -393,14 +405,16 @@ export default function MainFeed() {
                               5.0 (143)
                             </Text>
                           </View>
-                          <TouchableOpacity className={`${styles.buttonPrimary} px-2.5 py-1 rounded-full`}>
+                          {/* <TouchableOpacity className={`${styles.buttonPrimary} px-2.5 py-1 rounded-full`}>
                             <Text className={styles.buttonPrimaryText}>Book now</Text>
-                          </TouchableOpacity>
+                          </TouchableOpacity> */}
                         </View>
                       </View>
                     </View>
                   </View>
+                  </TouchableOpacity>
 
+                <TouchableOpacity>
                   <View className="w-72 mr-4">
                     <View className={`${styles.cardBg} rounded-xl shadow-md overflow-hidden border ${styles.cardBorder}`}>
                       <View className={`p-3 border-b ${styles.borderColor}`}>
@@ -427,13 +441,14 @@ export default function MainFeed() {
                               5.0 (143)
                             </Text>
                           </View>
-                          <TouchableOpacity className={`${styles.buttonPrimary} px-2.5 py-1 rounded-full`}>
+                          {/* <TouchableOpacity className={`${styles.buttonPrimary} px-2.5 py-1 rounded-full`}>
                             <Text className={styles.buttonPrimaryText}>Book now</Text>
-                          </TouchableOpacity>
+                          </TouchableOpacity> */}
                         </View>
                       </View>
                     </View>
                   </View>
+                  </TouchableOpacity>
                 </View>
               </ScrollView>
             </View>

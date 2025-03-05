@@ -167,7 +167,7 @@ export default function CreateTrip() {
 
       <ScrollView className="flex-1">
         {/* Header with Image Upload */}
-        <View className="relative h-48">
+        {/* <View className="relative h-48">
           <TouchableOpacity
             onPress={handleImagePick}
             className={`h-full w-full items-center justify-center ${styles.bgSecondary}`}
@@ -198,10 +198,10 @@ export default function CreateTrip() {
           >
             <Ionicons name="arrow-back" size={24} color={styles.iconColor} />
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Form Content */}
-        <View className="px-6 -mt-6 rounded-t-3xl">
+        <View className="px-6 rounded-t-3xl mt-6 mb-10 pb-20">
           <View className={`${styles.cardBg} rounded-3xl p-6 shadow-lg`}>
             {/* Title */}
             <View className="mb-8">

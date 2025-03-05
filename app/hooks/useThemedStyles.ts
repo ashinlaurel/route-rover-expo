@@ -30,7 +30,7 @@ export function useThemedStyles() {
     // Card styles
     cardBg: isDarkMode ? "bg-gray-800" : "bg-white",
     cardBorder: isDarkMode ? "border-gray-700" : "border-gray-200",
-    cardShadow: isDarkMode ? "shadow-none" : "shadow-md",
+    cardShadow: "shadow-lg",
 
     // Input styles
     inputBg: isDarkMode ? "bg-gray-800" : "bg-gray-50",

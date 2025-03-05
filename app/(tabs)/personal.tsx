@@ -12,6 +12,7 @@ import {
 } from "react-native";
 
 import React from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useTheme } from "../context/ThemeContext";
 import { useThemedStyles } from "../hooks/useThemedStyles";
@@ -55,20 +56,15 @@ export default function Personal() {
   ];
 
   return (
-    <View className={`flex-1 ${styles.bgPrimary}`}>
-      <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor="transparent"
-        translucent
-      />
+    <KeyboardAvoidingView   behavior={Platform.OS === "ios" ? "padding" : "height"}
+    className={`flex-1 ${styles.bgPrimary}`}>
 
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
       >
         {/* Profile Header */}
-        <View className={`pt-14 px-6 pb-6 ${styles.bgSecondary} rounded-b-[40px]`}>
+        <View className={`px-6 pb-6 ${styles.bgSecondary} rounded-b-[40px]`}>
           <View className="flex-row items-center justify-between mb-6">
             <Text className={`text-2xl font-bold ${styles.textPrimary}`}>Profile</Text>
             <TouchableOpacity
@@ -178,7 +174,7 @@ export default function Personal() {
         </View>
 
         {/* Menu Items */}
-        <View className="px-6">
+        <View className="px-6 mt-6">
           <Text className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>
             Settings
           </Text>
@@ -186,7 +182,7 @@ export default function Personal() {
             {menuItems.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                onPress={() => item.route && router.push(item.route)}
+                onPress={() => item.route && router.push(item.route as any)}
                 className={`flex-row items-center ${styles.cardBg} p-4 rounded-2xl`}
               >
                 <View className={`${styles.bgSecondary} p-3 rounded-xl`}>
@@ -217,6 +213,6 @@ export default function Personal() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
