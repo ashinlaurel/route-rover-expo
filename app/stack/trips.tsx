@@ -4,6 +4,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  StatusBar,
   Text,
   TextInput,
   TouchableOpacity,
@@ -12,36 +13,41 @@ import {
 
 import React from "react";
 import { useRouter } from "expo-router";
+import { useTheme } from "../context/ThemeContext";
+import { useThemedStyles } from "../hooks/useThemedStyles";
 
 export default function TripScreen() {
   const router = useRouter();
+  const styles = useThemedStyles();
+  const { isDarkMode, toggleDarkMode } = useTheme();
 
   return (
-    <KeyboardAvoidingView className="flex-1 bg-white">
+    <KeyboardAvoidingView className={`flex-1 ${styles.bgPrimary}`}>
+      <StatusBar
+        barStyle={isDarkMode ? "light-content" : "dark-content"}
+        backgroundColor={isDarkMode ? "#111827" : "#FFFFFF"}
+      />
       {/* Header */}
       <View className="p-5 flex-row items-center justify-between">
         <View>
-          <Text className="text-2xl font-medium text-gray-800">
+          <Text className={`text-2xl font-medium ${styles.textPrimary}`}>
             Agra Trip 2024
           </Text>
-          <Text className="text-gray-500">The trip at a glance</Text>
+          <Text className={styles.textSecondary}>The trip at a glance</Text>
         </View>
-        <View className="flex-row items-center">
-          <Image
-            source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
-            className="w-10 h-10 rounded-full"
+        <TouchableOpacity
+          onPress={toggleDarkMode}
+          className={`${styles.bgSecondary} p-2 rounded-full`}
+        >
+          <Ionicons
+            name={isDarkMode ? "sunny-outline" : "moon-outline"}
+            size={20}
+            color={styles.iconColor}
           />
-          <TouchableOpacity className="ml-3">
-            <Ionicons name="settings-outline" size={22} color="black" />
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
       </View>
 
-
-
       <ScrollView className="">
-
-
         {/* Trip Selection Tabs */}
         <ScrollView
           horizontal
@@ -49,16 +55,16 @@ export default function TripScreen() {
           className="px-5 mb-6 max-h-14"
         >
           {["Day 1", "Day 2", "Day 3", "Day 4"].map(
-            (region, index) => (
+            (day, index) => (
               <TouchableOpacity
                 key={index}
                 className={`px-4 py-3 mr-3 rounded-full ${
-                  region === "Day 1"
-                    ? "bg-black"
-                    : "bg-white border border-gray-100"
+                  day === "Day 1"
+                    ? styles.buttonPrimary
+                    : `${styles.bgPrimary} border ${styles.borderColor}`
                 }`}
                 style={{
-                  minWidth: region === "Day 1" ? 140 : 90,
+                  minWidth: day === "Day 1" ? 140 : 90,
                   height: 46,
                   justifyContent: "center",
                   alignItems: "center",
@@ -71,12 +77,12 @@ export default function TripScreen() {
               >
                 <Text
                   className={`${
-                    region === "Day 1" ? "text-white" : "text-gray-700"
+                    day === "Day 1" ? styles.buttonPrimaryText : styles.textPrimary
                   } text-center`}
                   style={{ fontSize: 15 }}
                   numberOfLines={1}
                 >
-                  {region}
+                  {day}
                 </Text>
               </TouchableOpacity>
             )
@@ -84,7 +90,7 @@ export default function TripScreen() {
         </ScrollView>
 
         <View className="px-5 mb-4">
-          <Text className="text-2xl font-semibold text-gray-800">
+          <Text className={`text-2xl font-semibold ${styles.textPrimary}`}>
             At A Glance
           </Text>
         </View>
@@ -93,57 +99,53 @@ export default function TripScreen() {
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          className=" max-h-32 mx-2 px-2"
+          className="max-h-32 mx-2 px-2"
         >
           <View className="flex-row">
             {/* First Card - Main Card */}
-            <TouchableOpacity className="w-72 mr-4 text-black bg-gray-100 rounded-lg">
+            <TouchableOpacity className={`w-72 mr-4 ${styles.cardBg} rounded-lg shadow-lg`}>
               <View className="relative flex items-center justify-center">
-
-                <View className="absolute top-3 left-3  bg-opacity-70 px-3 py-1 rounded-lg bg-black ">
+                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-lg shadow-lg`}>
                   <Text className="text-white text-xs">Expenses</Text>
                 </View>
-                <View className="mx-2 py-10 ">
-                  <Text className="text-6xl"> $100</Text>
+                <View className="mx-2 py-10">
+                  <Text className={`text-6xl ${styles.textPrimary}`}>$100</Text>
                 </View>
-
               </View>
             </TouchableOpacity>
 
-             {/* First Card - Main Card */}
-             <TouchableOpacity className="w-72 mr-4 text-black bg-gray-100 rounded-lg">
+            {/* Second Card */}
+            <TouchableOpacity className={`w-72 mr-4 ${styles.cardBg} rounded-lg shadow-lg`}>
               <View className="relative flex items-center justify-center">
-
-                <View className="absolute top-3 left-3  bg-opacity-70 px-3 py-1 rounded-lg bg-black ">
+                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-lg`}>
                   <Text className="text-white text-xs">Distance</Text>
                 </View>
-                <View className="mx-2 py-10 ">
-                  <Text className="text-6xl"> 45 KMs</Text>
+                <View className="mx-2 py-10">
+                  <Text className={`text-6xl ${styles.textPrimary}`}>45 KMs</Text>
                 </View>
-
               </View>
             </TouchableOpacity>
-
-
           </View>
         </ScrollView>
 
-
         <View className="px-5 my-4">
-          <Text className="text-2xl font-semibold text-gray-800">
+          <Text className={`text-2xl font-semibold ${styles.textPrimary}`}>
             Places Visited
           </Text>
         </View>
 
-        {/* Trip Cards Carousel */}
+        {/* Places Visited Carousel */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          className=" max-h-80 mx-2 px-2"
+          className="max-h-80 mx-2 px-2"
         >
           <View className="flex-row">
-            {/* First Card - Main Card */}
-            <TouchableOpacity className="w-72 mr-4">
+            {/* Taj Mahal Card */}
+            <TouchableOpacity
+              className="w-72 mr-4"
+              onPress={() => router.push("/stack/place")}
+            >
               <View className="relative">
                 <Image
                   source={{
@@ -151,11 +153,11 @@ export default function TripScreen() {
                   }}
                   className="w-full h-64 rounded-xl"
                 />
-                <View className="absolute top-3 left-3 bg-black bg-opacity-70 px-3 py-1 rounded-full">
+                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
                   <Text className="text-white text-xs">Tajganj</Text>
                 </View>
-                <TouchableOpacity className="absolute top-3 right-3 p-1.5 bg-white rounded-full">
-                  <Feather name="more-vertical" size={18} color="black" />
+                <TouchableOpacity className={`absolute top-3 right-3 p-1.5 ${styles.bgPrimary} rounded-full`}>
+                  <Feather name="more-vertical" size={18} color={styles.iconColor} />
                 </TouchableOpacity>
                 <View className="absolute bottom-0 left-0 right-0 p-4">
                   <Text className="text-white font-bold text-xl">Taj Mahal</Text>
@@ -170,6 +172,7 @@ export default function TripScreen() {
               </View>
             </TouchableOpacity>
 
+            {/* Agra Fort Card */}
             <View className="w-72 mr-4">
               <View className="relative">
                 <Image
@@ -178,15 +181,15 @@ export default function TripScreen() {
                   }}
                   className="w-full h-64 rounded-xl"
                 />
-                <View className="absolute top-3 left-3 bg-black bg-opacity-70 px-3 py-1 rounded-full">
+                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
                   <Text className="text-white text-xs">Agra</Text>
                 </View>
-                <TouchableOpacity className="absolute top-3 right-3 p-1.5 bg-white rounded-full">
-                  <Feather name="more-vertical" size={18} color="black" />
+                <TouchableOpacity className={`absolute top-3 right-3 p-1.5 ${styles.bgPrimary} rounded-full`}>
+                  <Feather name="more-vertical" size={18} color={styles.iconColor} />
                 </TouchableOpacity>
                 <View className="absolute bottom-0 left-0 right-0 p-4">
                   <Text className="text-white font-bold text-xl">
-                  Agra Fort
+                    Agra Fort
                   </Text>
                   <View className="flex-row items-center mt-1">
                     <FontAwesome name="star" size={14} color="white" />
@@ -201,30 +204,30 @@ export default function TripScreen() {
           </View>
         </ScrollView>
 
-
-
         <View className="px-5 my-4">
-          <Text className="text-2xl font-semibold text-gray-800">
+          <Text className={`text-2xl font-semibold ${styles.textPrimary}`}>
             Food
           </Text>
         </View>
 
-        {/* Trip Cards Carousel */}
+        {/* Food Cards Carousel */}
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
-          className=" max-h-80 mx-2 px-2"
+          className="max-h-80 mx-2 px-2 mb-6"
         >
           <View className="flex-row">
-            {/* First Card - Main Card */}
-
-            {/* Second Card - Detail Card */}
-            <View className="w-72 mr-4">
-              <View className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                <View className="p-3 border-b border-gray-100">
-                  <Text className="font-semibold text-gray-800">Joney's Place
+            {/* Joney's Place Card */}
+            <TouchableOpacity
+              className="w-72 mr-4"
+              onPress={() => router.push("/stack/food")}
+            >
+              <View className={`${styles.cardBg} rounded-xl shadow-md overflow-hidden border ${styles.cardBorder}`}>
+                <View className={`p-3 border-b ${styles.borderColor}`}>
+                  <Text className={`font-semibold ${styles.textPrimary}`}>
+                    Joney's Place
                   </Text>
-                  <Text className="text-xs text-gray-500">India</Text>
+                  <Text className={styles.textSecondary}>India</Text>
                 </View>
                 <Image
                   source={{
@@ -233,31 +236,27 @@ export default function TripScreen() {
                   className="w-full h-32"
                 />
                 <View className="p-3">
-                  <Text className="text-gray-700 text-sm mb-2">
+                  <Text className={`${styles.textSecondary} text-sm mb-2`}>
                     Discover the traditional food of Agra
                   </Text>
-                  <View className="flex-row justify-between items-center">
-                    <View className="flex-row items-center">
-                      <FontAwesome name="star" size={12} color="gold" />
-                      <Text className="text-gray-700 text-xs ml-1">
-                        5.0 (143)
-                      </Text>
-                    </View>
-                    {/* <TouchableOpacity className="bg-black px-2.5 py-1 rounded-full">
-                      <Text className="text-white text-xs">Book now</Text>
-                    </TouchableOpacity> */}
+                  <View className="flex-row items-center">
+                    <FontAwesome name="star" size={12} color="gold" />
+                    <Text className={`${styles.textSecondary} text-xs ml-1`}>
+                      5.0 (143)
+                    </Text>
                   </View>
                 </View>
               </View>
-            </View>
+            </TouchableOpacity>
 
+            {/* Second Food Card */}
             <View className="w-72 mr-4">
-              <View className="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
-                <View className="p-3 border-b border-gray-100">
-                  <Text className="font-semibold text-gray-800">
-                   Church Street
+              <View className={`${styles.cardBg} rounded-xl shadow-md overflow-hidden border ${styles.cardBorder}`}>
+                <View className={`p-3 border-b ${styles.borderColor}`}>
+                  <Text className={`font-semibold ${styles.textPrimary}`}>
+                    Pinch of Spice
                   </Text>
-                  <Text className="text-xs text-gray-500">Bangalore</Text>
+                  <Text className={styles.textSecondary}>Agra</Text>
                 </View>
                 <Image
                   source={{
@@ -266,20 +265,14 @@ export default function TripScreen() {
                   className="w-full h-32"
                 />
                 <View className="p-3">
-                  <Text className="text-gray-700 text-sm mb-2">
-                    Discover the vibrant culture and stunning beaches of Rio de
-                    Janeiro.
+                  <Text className={`${styles.textSecondary} text-sm mb-2`}>
+                    Modern Indian cuisine with a twist
                   </Text>
-                  <View className="flex-row justify-between items-center">
-                    <View className="flex-row items-center">
-                      <FontAwesome name="star" size={12} color="gold" />
-                      <Text className="text-gray-700 text-xs ml-1">
-                        5.0 (143)
-                      </Text>
-                    </View>
-                    {/* <TouchableOpacity className="bg-black px-2.5 py-1 rounded-full">
-                      <Text className="text-white text-xs">Book now</Text>
-                    </TouchableOpacity> */}
+                  <View className="flex-row items-center">
+                    <FontAwesome name="star" size={12} color="gold" />
+                    <Text className={`${styles.textSecondary} text-xs ml-1`}>
+                      4.8 (98)
+                    </Text>
                   </View>
                 </View>
               </View>
@@ -287,7 +280,6 @@ export default function TripScreen() {
           </View>
         </ScrollView>
       </ScrollView>
-
     </KeyboardAvoidingView>
   );
 }
