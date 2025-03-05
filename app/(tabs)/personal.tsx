@@ -12,40 +12,63 @@ import {
 
 import React from "react";
 import { useRouter } from "expo-router";
+import { useThemedStyles } from "../hooks/useThemedStyles";
 
 export default function Personal() {
   const router = useRouter();
+  const styles = useThemedStyles();
 
   return (
-    <View className="bg-white h-full">
+    <View className={`h-full ${styles.bgPrimary}`}>
       {/* Header with Profile Info */}
-      <View className="p-8 pb-8 ">
+      <View className="p-8 pb-8">
         <View className="flex-row items-center">
-          <Image
-            source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
-            className="w-20 h-20 rounded-full"
-          />
+          <TouchableOpacity
+            onPress={() => router.push("/stack/editprofile")}
+            className="relative"
+          >
+            <Image
+              source={{ uri: "https://randomuser.me/api/portraits/women/1.jpg" }}
+              className="w-20 h-20 rounded-full"
+              style={{
+                borderWidth: 2,
+                borderColor: '#f3f4f6',
+              }}
+            />
+            <View
+              className={`absolute bottom-0 right-0 ${styles.buttonPrimary} p-1.5 rounded-full`}
+              style={{
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.1,
+                shadowRadius: 3,
+                elevation: 2,
+              }}
+            >
+              <Ionicons name="pencil" size={12} color={styles.iconColor} />
+            </View>
+          </TouchableOpacity>
           <View className="ml-4">
-            <Text className="text-2xl font-semibold text-gray-800">
+            <Text className={`text-2xl font-semibold ${styles.textPrimary}`}>
               Vanessa Smith
             </Text>
-            <Text className="text-gray-500">Travel Enthusiast</Text>
+            <Text className={styles.textSecondary}>Travel Enthusiast</Text>
           </View>
         </View>
 
         {/* Stats */}
         <View className="flex-row justify-between mt-6 px-10">
           <View className="items-center">
-            <Text className="text-2xl font-bold text-gray-800">12</Text>
-            <Text className="text-gray-500">Trips</Text>
+            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>12</Text>
+            <Text className={styles.textSecondary}>Trips</Text>
           </View>
           <View className="items-center">
-            <Text className="text-2xl font-bold text-gray-800">48</Text>
-            <Text className="text-gray-500">Places</Text>
+            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>48</Text>
+            <Text className={styles.textSecondary}>Places</Text>
           </View>
           <View className="items-center">
-            <Text className="text-2xl font-bold text-gray-800">2.4k</Text>
-            <Text className="text-gray-500">Followers</Text>
+            <Text className={`text-2xl font-bold ${styles.textPrimary}`}>2.4k</Text>
+            <Text className={styles.textSecondary}>Followers</Text>
           </View>
         </View>
       </View>
@@ -53,7 +76,7 @@ export default function Personal() {
       <ScrollView className="pl-3">
         {/* My Trips Section */}
         <View className="mb-6">
-          <Text className="text-xl font-semibold text-gray-800 mb-4">
+          <Text className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>
             My Trips
           </Text>
           <ScrollView
@@ -73,7 +96,7 @@ export default function Personal() {
                   }}
                   className="w-full h-48 rounded-xl"
                 />
-                <View className="absolute top-3 left-3 bg-black bg-opacity-70 px-3 py-1 rounded-full">
+                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
                   <Text className="text-white text-xs">Completed</Text>
                 </View>
                 <View className="absolute bottom-0 left-0 right-0 p-4">
@@ -92,7 +115,7 @@ export default function Personal() {
                   }}
                   className="w-full h-48 rounded-xl"
                 />
-                <View className="absolute top-3 left-3 bg-black bg-opacity-70 px-3 py-1 rounded-full">
+                <View className={`absolute top-3 left-3 ${styles.overlayBg} px-3 py-1 rounded-full`}>
                   <Text className="text-white text-xs">Upcoming</Text>
                 </View>
                 <View className="absolute bottom-0 left-0 right-0 p-4">
@@ -105,36 +128,42 @@ export default function Personal() {
         </View>
 
         {/* Account Settings */}
-        <View className="mb-6 ">
-          <Text className="text-xl font-semibold text-gray-800 mb-4">
+        <View className="mb-6">
+          <Text className={`text-xl font-semibold ${styles.textPrimary} mb-4`}>
             Account Settings
           </Text>
           <View className="space-y-4">
-            <TouchableOpacity className="flex-row items-center justify-between bg-gray-50 p-4 rounded-xl">
+            <TouchableOpacity
+              className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}
+              onPress={() => router.push("/stack/editprofile")}
+            >
               <View className="flex-row items-center">
-                <Ionicons name="person-circle-outline" size={24} color="black" />
-                <Text className="ml-3 text-gray-800">Edit Profile</Text>
+                <Ionicons name="person-circle-outline" size={24} color={styles.iconColor} />
+                <Text className={`ml-3 ${styles.textPrimary}`}>Edit Profile</Text>
               </View>
-              <Feather name="chevron-right" size={20} color="gray" />
+              <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center justify-between bg-gray-50 p-4 rounded-xl">
+            <TouchableOpacity className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}>
               <View className="flex-row items-center">
-                <Ionicons name="notifications-outline" size={24} color="black" />
-                <Text className="ml-3 text-gray-800">Notifications</Text>
+                <Ionicons name="notifications-outline" size={24} color={styles.iconColor} />
+                <Text className={`ml-3 ${styles.textPrimary}`}>Notifications</Text>
               </View>
-              <Feather name="chevron-right" size={20} color="gray" />
+              <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center justify-between bg-gray-50 p-4 rounded-xl">
+            <TouchableOpacity
+              className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}
+              onPress={() => router.push("/stack/settings")}
+            >
               <View className="flex-row items-center">
-                <Ionicons name="settings-outline" size={24} color="black" />
-                <Text className="ml-3 text-gray-800">Settings</Text>
+                <Ionicons name="settings-outline" size={24} color={styles.iconColor} />
+                <Text className={`ml-3 ${styles.textPrimary}`}>Settings</Text>
               </View>
-              <Feather name="chevron-right" size={20} color="gray" />
+              <Feather name="chevron-right" size={20} color={styles.iconColorMuted} />
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center justify-between bg-gray-50 p-4 rounded-xl">
+            <TouchableOpacity className={`flex-row items-center justify-between ${styles.bgSecondary} p-4 rounded-xl`}>
               <View className="flex-row items-center">
                 <Ionicons name="log-out-outline" size={24} color="red" />
                 <Text className="ml-3 text-red-500">Logout</Text>

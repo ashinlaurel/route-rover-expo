@@ -3,6 +3,7 @@ import "../global.css";
 import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // import { Stack } from "expo-router";
 // import { StatusBar } from "react-native";
@@ -19,13 +20,16 @@ import { StatusBar } from "react-native";
 
 export default function RootLayout() {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <Stack screenOptions={{ headerShown: false, animation: 'fade' }}>
+    <ThemeProvider>
+      <Stack
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
         <Stack.Screen name="stack/login" />
         <Stack.Screen name="(tabs)" />
       </Stack>
-    </>
+    </ThemeProvider>
   );
 }
 
