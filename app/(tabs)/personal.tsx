@@ -12,9 +12,19 @@ import {
 
 import React from "react";
 import { useRouter } from "expo-router";
+import { useUser } from "../context/UserContext";
 
 export default function Personal() {
   const router = useRouter();
+  const { user, logout } = useUser();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  };
 
   return (
     <View className="bg-white h-full">
@@ -27,7 +37,7 @@ export default function Personal() {
           />
           <View className="ml-4">
             <Text className="text-2xl font-semibold text-gray-800">
-              Vanessa Smith
+              {user?.name || "User"}
             </Text>
             <Text className="text-gray-500">Travel Enthusiast</Text>
           </View>
@@ -134,7 +144,10 @@ export default function Personal() {
               <Feather name="chevron-right" size={20} color="gray" />
             </TouchableOpacity>
 
-            <TouchableOpacity className="flex-row items-center justify-between bg-gray-50 p-4 rounded-xl">
+            <TouchableOpacity 
+              onPress={handleLogout}
+              className="flex-row items-center justify-between bg-gray-50 p-4 rounded-xl"
+            >
               <View className="flex-row items-center">
                 <Ionicons name="log-out-outline" size={24} color="red" />
                 <Text className="ml-3 text-red-500">Logout</Text>

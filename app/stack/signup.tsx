@@ -8,18 +8,54 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
+  ActivityIndicator,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
+import { useUser } from '../context/UserContext';
 
 export default function SignupScreen() {
+  const { signup, user, isLoading } = useUser();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      router.replace('/mainfeed');
+    }
+  }, [user]);
+
+  const handleSignup = async () => {
+    if (!name || !email || !password || !phone) {
+      setError("Please fill in all required fields");
+      return;
+    }
+
+    try {
+      setError("");
+      setIsRegistering(true);
+      await signup(email, password, name, phone);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Registration failed");
+    } finally {
+      setIsRegistering(false);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <View className="flex-1 justify-center items-center bg-white">
+        <ActivityIndicator size="large" color="#000000" />
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
@@ -40,7 +76,7 @@ export default function SignupScreen() {
           </View>
 
           {/* Main Content */}
-          <View className="px-5 -mt-6">
+          <View className="px-5">
             {/* Welcome Text */}
             <View className="bg-white rounded-3xl px-6 py-6">
               <Text className="text-3xl font-bold text-gray-800 text-center mb-2">
@@ -50,6 +86,13 @@ export default function SignupScreen() {
                 Sign up to get started
               </Text>
             </View>
+
+            {/* Error Message */}
+            {error ? (
+              <View className="mb-4 p-3 bg-red-50 rounded-xl">
+                <Text className="text-red-500 text-center">{error}</Text>
+              </View>
+            ) : null}
 
             {/* Input Fields */}
             <View className="mt-6">
@@ -131,10 +174,15 @@ export default function SignupScreen() {
 
               {/* Sign Up Button */}
               <TouchableOpacity
-                onPress={() => router.push("/mainfeed")}
-                className="rounded-2xl bg-black items-center py-4 shadow-sm"
+                onPress={handleSignup}
+                disabled={isRegistering}
+                className={`rounded-2xl bg-black items-center py-4 shadow-sm ${isRegistering ? 'opacity-70' : ''}`}
               >
-                <Text className="text-lg font-semibold text-white">Sign Up</Text>
+                {isRegistering ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text className="text-lg font-semibold text-white">Sign Up</Text>
+                )}
               </TouchableOpacity>
 
               {/* Social Logins */}
